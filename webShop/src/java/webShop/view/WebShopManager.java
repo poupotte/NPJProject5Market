@@ -73,6 +73,22 @@ public class WebShopManager implements Serializable {
     public Exception getException() {
         return transactionFailure;
     }
+
+    public String getCurrentPseudo() {
+        return currentPseudo;
+    }
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public void setCurrentPseudo(String currentPseudo) {
+        this.currentPseudo = currentPseudo;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
     
     public void loginCustomer(){
         startConversation();
