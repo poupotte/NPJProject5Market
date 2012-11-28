@@ -9,6 +9,7 @@ import javax.enterprise.context.ConversationScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
+import javax.faces.bean.ManagedProperty;
 import javax.inject.Inject;
 import webShop.controller.WebShopFacade;
 import webShop.model.CustomerDTO;
@@ -26,10 +27,12 @@ public class WebShopManager implements Serializable {
     private String currentPseudo;
     private String currentPassword;
     private String error = null;
-    private Boolean homePage = false;
+    //private Boolean homePage = false;
     private Exception transactionFailure;
     @Inject
     private Conversation conversation;
+    @ManagedProperty(value="#{homePageManager}")
+    private HomePageManager homePage;
     /**
      * Creates a new instance of webShopManager
      */
@@ -88,14 +91,16 @@ public class WebShopManager implements Serializable {
         return currentPassword;
     }
 
+    /*
     public Boolean getHomePage() {
         return homePage;
     }
-
+*/
+    /*
     public void setHomePage(Boolean homePage) {
         this.homePage = homePage;
     }
-
+*/
   
 
     public void setError(String error) {
@@ -122,7 +127,8 @@ public class WebShopManager implements Serializable {
             } else {
                 webShopFacade.loginCustomer(currentPseudo);
                 error = null;
-                homePage = true;
+                homePage.setUserName(customer.getId());
+                homePage.setLogIn();
             }
         } catch (Exception e) {
             handleException(e);
@@ -139,9 +145,11 @@ public class WebShopManager implements Serializable {
             } else {
                 error = null;
                 CustomerDTO customer;     
-                customer = webShopFacade.createCustomerDTO     
-            (currentPseudo, currentPassword);
-                this.homePage = true;
+                customer = webShopFacade.createCustomerDTO(
+                                                    currentPseudo,
+                                                    currentPassword);
+                homePage.setUserName(customer.getId());
+                homePage.setLogIn();
             }
         } catch (Exception e) {
             handleException(e);
