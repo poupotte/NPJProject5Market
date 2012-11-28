@@ -9,14 +9,19 @@
         <h:form>
             <p>
                 <h:outputLabel for="pseudo" value="Pseudo : "/> 
-                <h:inputText id="amount" value="#{webShopManager.currentPseudo}" />
+                <h:inputText id="pseudo" value="#{webShopManager.currentPseudo}" />
              </p>
              <p>
                 <h:outputLabel for="password" value="Password : "/> 
-                <h:inputText id="amount" value="#{webShopManager.currentPassword}" />
+                <h:inputSecret id="password" value="#{webShopManager.currentPassword}" />
              </p>
-             <h:commandButton value="Login" action="#{webShopManager.loginCustomer}"/>
-             <h:commandButton value="Register" action="#{webShopManager.createNewCustomer}"/>
+             <p>
+                <h:commandButton value="Login" action="#{webShopManager.loginCustomer}"/>
+                <h:commandButton value="Register" action="#{webShopManager.createNewCustomer}"/>
+             </p>
+             <p>
+                 <h:outputText value="#{webShopManager.error}" rendered="#{webShopManager.error != null}" style="color:red"/>
+             </p>
         </h:form>
     </h:body>
 </html>

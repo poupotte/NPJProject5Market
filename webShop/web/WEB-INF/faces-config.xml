@@ -11,6 +11,9 @@
         <navigation-case>
             <if>#{!webShopManager.success}</if>
             <to-view-id>/error.xhtml</to-view-id>
+            <if>#{webShopManagar.homePage}</if>
+            <to-view-id>/homePage.xhtml</to-view-id>      
         </navigation-case>
     </navigation-rule>
 </faces-config>
+

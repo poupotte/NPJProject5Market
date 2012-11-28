@@ -25,6 +25,8 @@ public class WebShopManager implements Serializable {
     private WebShopFacade webShopFacade;
     private String currentPseudo;
     private String currentPassword;
+    private String error = null;
+    private Boolean homePage = false;
     private Exception transactionFailure;
     @Inject
     private Conversation conversation;
@@ -78,8 +80,24 @@ public class WebShopManager implements Serializable {
         return currentPseudo;
     }
 
+    public String getError() {
+        return error;
+    }
+
     public String getCurrentPassword() {
         return currentPassword;
+    }
+
+    public Boolean getHomepage() {
+        return homePage;
+    }
+
+    public void setHomepage(Boolean homePage) {
+        this.homePage = homePage;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     public void setCurrentPseudo(String currentPseudo) {
@@ -92,13 +110,37 @@ public class WebShopManager implements Serializable {
     
     public void loginCustomer(){
         startConversation();
-        webShopFacade.loginCustomer(currentPseudo); 
+        CustomerDTO customer;
+        try {
+            customer = webShopFacade.getCustomer(currentPseudo);
+            if (customer == null) {
+                error = "Error : This name does not exist";
+            } else if (! (customer.getPassword().equals(currentPassword))) {
+                error = "Error : The password or the pseudo is not correct";
+            } else {
+                webShopFacade.loginCustomer(currentPseudo);
+                error = null;
+                homePage = true;
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
     
     public void createNewCustomer() {
         startConversation();
         try {
-        CustomerDTO customer = webShopFacade.createCustomerDTO(currentPseudo, currentPassword);     
+            if (currentPassword.length() < 8) {
+                error = "Error : Password length should be longer than 8 characters";            
+            } else if (webShopFacade.getCustomer(currentPseudo) != null) {
+                error = "Error : This name has already been registred";
+            } else {
+                error = null;
+                CustomerDTO customer;     
+                customer = webShopFacade.createCustomerDTO     
+            (currentPseudo, currentPassword);
+                this.homePage = true;
+            }
         } catch (Exception e) {
             handleException(e);
         }

@@ -5,7 +5,10 @@
 package webShop.controller;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import webShop.model.Customer;
 import webShop.model.CustomerDTO;
 
@@ -13,9 +16,11 @@ import webShop.model.CustomerDTO;
  *
  * @author zoe
  */
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateless
 public class WebShopFacade {
     
+    @PersistenceContext(unitName = "webShopPU")
     private EntityManager em;
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -37,6 +42,14 @@ public class WebShopFacade {
         CustomerDTO customer = em.find(Customer.class, pseudo);
         customer.setIsLog(false);
         em.getTransaction().commit();    
+    }
+    
+    public CustomerDTO getCustomer(String pseudo){
+        CustomerDTO customer = em.find(Customer.class, pseudo);
+        if (customer == null) {
+            return null;
+        }
+        return customer;
     }
 
 }

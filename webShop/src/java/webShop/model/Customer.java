@@ -26,7 +26,7 @@ public class Customer implements Serializable, CustomerDTO {
     public Customer (String pseudo,String password) {
         this.pseudo = pseudo;
         this.password = password;
-        isLog = true;
+        this.isLog = true;
     }
     
     public Customer(){
