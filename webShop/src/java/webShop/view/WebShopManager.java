@@ -88,13 +88,15 @@ public class WebShopManager implements Serializable {
         return currentPassword;
     }
 
-    public Boolean getHomepage() {
+    public Boolean getHomePage() {
         return homePage;
     }
 
-    public void setHomepage(Boolean homePage) {
+    public void setHomePage(Boolean homePage) {
         this.homePage = homePage;
     }
+
+  
 
     public void setError(String error) {
         this.error = error;
@@ -133,7 +135,7 @@ public class WebShopManager implements Serializable {
             if (currentPassword.length() < 8) {
                 error = "Error : Password length should be longer than 8 characters";            
             } else if (webShopFacade.getCustomer(currentPseudo) != null) {
-                error = "Error : This name has already been registred";
+                error = "Error : This name has already been registered";
             } else {
                 error = null;
                 CustomerDTO customer;     
